@@ -20,9 +20,10 @@ class RoomsController < ApplicationController
 
     respond_to do |format|
       if @room.save
-        format.html { redirect_to room_url(@room), notice: "Room was successfully created." }
+        UserRoom.create(room: @room, user: current_user)
+        format.turbo_stream { render turbo_stream: turbo_stream.append('rooms', partial: 'sidebar/single_room', locals: { room: @room }) }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new }
       end
     end
   end
@@ -30,9 +31,9 @@ class RoomsController < ApplicationController
   def update
     respond_to do |format|
       if @room.update(room_params)
-        format.html { redirect_to room_url(@room), notice: "Room was successfully updated." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("room_#{@room.id}", partial: 'sidebar/single_room', locals: { room: @room }) }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit }
       end
     end
   end
@@ -45,13 +46,19 @@ class RoomsController < ApplicationController
     end
   end
 
+  def add_user
+    UserRoom.create(user_id: params[:user_id], room_id: params[:room_id])
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace('room_details', partial: 'rooms/room/details', locals: { room: Room.find(params[:room_id]) }) }
+    end
+  end
+
   private
+    def set_room
+      @room = Room.find(params[:id])
+    end
 
-  def set_room
-    @room = Room.find(params[:id])
-  end
-
-  def room_params
-    params.require(:room).permit(:name)
-  end
+    def room_params
+      params.require(:room).permit(:name)
+    end
 end
