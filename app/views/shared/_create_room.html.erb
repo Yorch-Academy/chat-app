@@ -1,0 +1,8 @@
+<%= turbo_frame_tag 'room_form' do %>
+  <section class="flex flex-col items-center justify-center gap-2 mb-5">
+    <h3 class="text-white font-semibold text-sm text-center">Want to start a new conversation?</h3>
+    <%= link_to new_room_path, id: 'new_room_path', class: 'rounded px-3 py-1 bg-green-700 text-white font-semibold text-sm' do %>
+      Create new room
+    <% end %>
+  </section>
+<% end %>
