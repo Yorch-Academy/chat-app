@@ -21,7 +21,7 @@ class RoomsController < ApplicationController
     respond_to do |format|
       if @room.save
         UserRoom.create(room: @room, user: current_user)
-        format.turbo_stream { render turbo_stream: turbo_stream.append("user_#{current_user.id}_rooms", partial: 'shared/room', locals: { room: @room }) }
+        format.turbo_stream { render turbo_stream: turbo_stream.append("rooms", partial: 'shared/room', locals: { room: @room }) }
       else
         format.turbo_stream { render turbo_stream: turbo_stream.replace("room_form", partial: 'rooms/form', locals: { room: @room, title: 'Create new room' }) }
       end
@@ -47,9 +47,10 @@ class RoomsController < ApplicationController
   end
 
   def add_user
-    UserRoom.create(user_id: params[:user_id], room_id: params[:room_id])
+    UserRoom.create(room_id: params[:room_id], user_id: params[:user_id])
+
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace('room_details', partial: 'rooms/room/details', locals: { room: Room.find(params[:room_id]) }) }
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("room_show_#{params[:room_id]}", partial: 'rooms/room', locals: { room: Room.find(params[:room_id]) }) }
     end
   end
 
