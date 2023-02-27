@@ -1,12 +1,35 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
+<%= turbo_frame_tag 'rooms_controller' do %>
+  <main class="flex w-full h-screen bg-[#181D31]">
+    <%= render 'sidebar/side_bar' %>
 
-    <%= render @room %>
+    <section class="w-5/6 flex flex-col gap-5 h-screen px-5">
+      <%= render 'rooms/room/details', { room: @room } %>
 
-    <%= link_to 'Edit this room', edit_room_path(@room), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to 'Destroy this room', room_path(@room), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
-    </div>
-    <%= link_to 'Back to rooms', rooms_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-  </div>
-</div>
+      <div class="flex flex-col w-full items-center">
+        <div class="flex flex-col w-full">
+          <h4 class="text-white font-bold text-xl text-center">Chat</h4>
+          <p class="text-white font-medium text-center">This is the chat for this room</p>
+          <p class="text-white font-medium text-center">You can add more users if you want by clicking on their emails</p>
+        </div>
+
+        <div class="flex flex-col w-5/6 items-center justify-center">
+
+          <div class='h-72 w-5/6 bg-white rounded-lg p-2 overflow-y-auto my-5' id="room_messages_div">
+            <% @room.messages.order(:created_at).each do |message| %>
+              <%= render 'messages/message', message: message %>
+            <% end %>
+          </div>
+
+          <div class="w-5/6 flex flex-col" data-controller="form">
+            <%= form_with(model: [@room, Message.new], id: 'message_form', class: 'flex flex-col w-full', data: { controller: 'form', action: 'submit->form#formAction' }) do |f| %>
+              <div class="flex w-full">
+                <%= f.text_field :name, class: 'w-full rounded shadow text-sm font-semibold border border-gray-100' %>
+                <%= f.submit class: 'bg-green-600 text-white font-semibold rounded p-2' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+<% end %>

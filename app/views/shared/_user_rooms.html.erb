@@ -6,7 +6,7 @@
   <h3 class="text-xl font-bold text-white mt-3 text-center mb-2">My Rooms</h3>
   <div class="flex flex-col px-5 gap-2 w-full" id="user_<%= "#{user.id}" %>_rooms">
     <% user.rooms.all.each do |room| %>
-      <%= render 'sidebar/room', room: room %>
+      <%= render 'shared/room', room: room %>
     <% end %>
   </div>
 </section>

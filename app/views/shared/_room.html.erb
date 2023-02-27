@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "room_#{room.id}", class: 'flex w-full my-2 p-2 border-2 rounded justify-between items-center' do %>
+  <%= link_to room_path(room), class:"font-semibold text-white text-sm", data: { turbo_frame: 'rooms_controller' } do %>
+    <%= room.name %>
+  <% end %>
+  <%= link_to edit_room_path(room), id: "edit_room_#{room.id}", class: 'text-xs text-white font-medium' do %>
+    -> Edit
+  <% end %>
+<% end %>
