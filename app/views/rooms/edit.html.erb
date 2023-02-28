@@ -1,1 +1,3 @@
-<%= render "form", {room: @room, title: 'Edit room'} %>
+<%= turbo_frame_tag "room_#{@room.id}" do %>
+  <%= render "form", {room: @room, title: 'Edit room'} %>
+<% end %>
