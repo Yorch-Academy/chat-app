@@ -1,4 +1,6 @@
 <%= turbo_frame_tag 'rooms_controller' do %>
+<%= turbo_stream_from 'room_messages_channel' %>
+
   <main class="flex w-full h-screen bg-[#181D31]">
     <%= render 'shared/side_bar' %>
 
