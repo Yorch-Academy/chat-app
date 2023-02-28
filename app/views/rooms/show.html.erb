@@ -4,6 +4,20 @@
 
     <section class="w-5/6 flex flex-col gap-5 h-screen px-5">
       <%= render 'room', room: @room %>
+
+      <div class="flex flex-col items-center w-full">
+        <div class="flex flex-col w-5/6 items-center justify-center">
+          <div class="h-72 w-5/6 bg-white rounded p-2 my-5 overflow-y-auto" id="room_messages_div">
+            <% @room.messages.order(:id).each do |message| %>
+              <%= render 'messages/message', message: message %>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-5/6 items-center justify-center">
+          <%= render 'messages/form', { room: @room, message: Message.new } %>
+        </div>
+      </div>
     </section>
   </main>
 <% end %>
