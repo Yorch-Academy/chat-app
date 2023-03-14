@@ -1,5 +1,5 @@
 <h4 class="text-base font-medium text-white text-center"> <%= title %> </h4>
-<%= form_with(model: room, class: 'flex flex-col my-3 w-full', data: { controller: 'form', action: 'submit->form#resetRoomForm' }) do |form| %>
+<%= form_with(model: room, class: 'flex flex-col my-3 w-full') do |form| %>
   <% if room.errors.any? %>
     <div class="bg-red-300 rounded m-2 p-2">
       <h2 class="font-bold text-center text-red-800">An error ocurred while saving it.</h2>
